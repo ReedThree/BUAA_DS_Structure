@@ -1,0 +1,13 @@
+function(testCircularLinkedList part result)
+add_executable(CircularLinkedList_${part} ${part}.c)
+target_link_libraries(CircularLinkedList_${part} PRIVATE asan ubsan structure_compiler_flags Trace CircularLinkedList)
+add_test(NAME testCircularLinkedList_${part} COMMAND CircularLinkedList_${part})
+set_tests_properties(testCircularLinkedList_${part} PROPERTIES PASS_REGULAR_EXPRESSION ${result})
+endfunction()
+
+testCircularLinkedList("testInsertIndex" "Len = 6\n{c = 1, p = 5}, {c = 2, p = 4}, {c = 3, p = 3}, {c = 4, p = 2}, {c = 5, p = 1}, {c = 1, p = 5}")
+testCircularLinkedList("testPrintWithNum" "{c = 1, p = 5}, {c = 2, p = 4}, {c = 3, p = 3}, {c = 4, p = 2}, {c = 5, p = 1}, {c = 1, p = 5}, {c = 1, p = 5}, {c = 2, p = 4}, {c = 3, p = 3}, {c = 4, p = 2")
+testCircularLinkedList("testSearchNode" "{c = 3, p = 5}, {c = 2, p = 4}, {c = 4, p = 3}, {c = 4, p = 2}, {c = 5, p = 1}, {c = 2, p = 5}")
+testCircularLinkedList("testGetAtIndex" "Index: 10\n{c = 5, p = 1}\n")
+testCircularLinkedList("testDeleteIndex" "\n{c = 3, p = 3}, {c = 4, p = 2}, {c = 5, p = 1}, {c = 1, p = 5}\n")
+testCircularLinkedList("testSeekNode" "\n{c = 1, p = 5}\n")

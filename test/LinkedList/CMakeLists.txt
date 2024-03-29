@@ -1,0 +1,11 @@
+function(testLinkedList part result)
+add_executable(LinkedList_${part} ${part}.c)
+target_link_libraries(LinkedList_${part} PRIVATE asan ubsan structure_compiler_flags Trace LinkedList)
+add_test(NAME testLinkedList_${part} COMMAND LinkedList_${part})
+set_tests_properties(testLinkedList_${part} PROPERTIES PASS_REGULAR_EXPRESSION ${result})
+endfunction()
+
+testLinkedList("testInsert" "Len = 10\n{c = 1 p = 0}, {c = 2 p = 2}, {c = 0 p = 1}, {c = 0 p = 2}, {c = 0 p = 3}, {c = 0 p = 3}, {c = 0 p = 3}, {c = 0 p = 4}, {c = 0 p = 5}, {c = 0 p = 6}\n")
+testLinkedList("testSearch" "{c = 3 p = 3}\n{c = 2 p = 3}\n")
+testLinkedList("testDelete" "Len = 6\n{c = 0 p = 2}, {c = 3 p = 3}, {c = 2 p = 3}, {c = 1 p = 3}, {c = 0 p = 4}, {c = 0 p = 5}\n")
+testLinkedList("testGetIndex" "{c = 0 p = 6}\n")

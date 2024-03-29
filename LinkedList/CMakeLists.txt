@@ -1,0 +1,3 @@
+add_library(LinkedList LinkedList.c)
+target_link_libraries(LinkedList PRIVATE structure_compiler_flags Trace)
+target_include_directories(LinkedList INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

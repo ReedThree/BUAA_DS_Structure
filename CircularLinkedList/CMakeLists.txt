@@ -1,0 +1,3 @@
+add_library(CircularLinkedList CircularLinkedList.c)
+target_link_libraries(CircularLinkedList PRIVATE structure_compiler_flags Trace)
+target_include_directories(CircularLinkedList INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})

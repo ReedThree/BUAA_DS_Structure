@@ -1,0 +1,12 @@
+function(testArrayList part result)
+add_executable(ArrayList_${part} ${part}.c)
+target_link_libraries(ArrayList_${part} PRIVATE asan ubsan structure_compiler_flags Trace ArrayList)
+add_test(NAME testArrayList_${part} COMMAND ArrayList_${part})
+set_tests_properties(testArrayList_${part} PROPERTIES PASS_REGULAR_EXPRESSION ${result})
+endfunction()
+
+testArrayList("testInsert" "\[{word = \"5\", count = 1}, {word = \"4\", count = 2}, {word = \"3\", count = 3}, {word = \"2\", count = 4}, {word = \"1\", count = 5}\]")
+testArrayList("testInsertOrdered" "\[{word = \"1\", count = 5}, {word = \"2\", count = 4}, {word = \"3\", count = 3}, {word = \"4\", count = 2}, {word = \"5\", count = 1}\]")
+testArrayList("testGet" "{word = \"5\", count = 1}22")
+testArrayList("testSearch" "\[{word = \"1\", count = 5}, {word = \"2\", count = 4}, {word = \"3\", count = 4}, {word = \"4\", count = 4}, {word = \"5\", count = 1}\]")
+testArrayList("testDelete" "\[{word = \"2\", count = 4}, {word = \"3\", count = 3}, {word = \"4\", count = 2}\]")

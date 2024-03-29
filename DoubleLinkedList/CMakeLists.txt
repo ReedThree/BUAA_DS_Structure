@@ -1,0 +1,3 @@
+add_library(DoubleLinkedList DoubleLinkedList.c)
+target_link_libraries(DoubleLinkedList PRIVATE structure_compiler_flags Trace)
+target_include_directories(DoubleLinkedList INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
