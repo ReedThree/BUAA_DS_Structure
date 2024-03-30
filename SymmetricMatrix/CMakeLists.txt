@@ -1,0 +1,3 @@
+add_library(SymmetricMatrix SymmetricMatrix.c)
+target_link_libraries(SymmetricMatrix PRIVATE structure_compiler_flags Trace)
+target_include_directories(SymmetricMatrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
