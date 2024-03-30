@@ -17,8 +17,8 @@ void SymmetricMatrix_destroyMatrix(struct SymmetricMatrix *target) {
     _free(target);
 }
 
-inline double SymmetricMatrix_getByPos(struct SymmetricMatrix *matrix, size_t x,
-                                       size_t y) {
+inline double SymmetricMatrix_getPos(struct SymmetricMatrix *matrix, size_t x,
+                                     size_t y) {
     size_t index = 0;
     if (x >= y) {
         index = x * (x - 1) / 2 + y - 1;
@@ -58,8 +58,8 @@ void SymmetricMatrix_readMatrix(struct SymmetricMatrix *target) {
 void SymmetricMatrix_printMatrix(struct SymmetricMatrix *target) {
     for (size_t x = 1; x <= target->n; x++) {
         for (size_t y = 1; y < target->n; y++) {
-            printf("%.2f ", SymmetricMatrix_getByPos(target, x, y));
+            printf("%.2f ", SymmetricMatrix_getPos(target, x, y));
         }
-        printf("%.2f\n", SymmetricMatrix_getByPos(target, x, target->n));
+        printf("%.2f\n", SymmetricMatrix_getPos(target, x, target->n));
     }
 }

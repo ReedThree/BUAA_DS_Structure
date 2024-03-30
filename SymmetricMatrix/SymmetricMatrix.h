@@ -11,7 +11,7 @@ struct SymmetricMatrix {
 struct SymmetricMatrix *SymmetricMatrix_createMatrix(size_t n);
 void SymmetricMatrix_destroyMatrix(struct SymmetricMatrix *target);
 // From 1,1 to n, n
-double SymmetricMatrix_getByPos(struct SymmetricMatrix *matrix, size_t x, size_t y);
+double SymmetricMatrix_getPos(struct SymmetricMatrix *matrix, size_t x, size_t y);
 void SymmetricMatrix_setPos(struct SymmetricMatrix *matrix, size_t x, size_t y, double value);
 void SymmetricMatrix_readMatrix(struct SymmetricMatrix *target);
 void SymmetricMatrix_printMatrix(struct SymmetricMatrix *target);
