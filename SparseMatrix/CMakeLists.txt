@@ -1,0 +1,3 @@
+add_library(SparseMatrix SparseMatrix.c)
+target_link_libraries(SparseMatrix PRIVATE structure_compiler_flags Trace)
+target_include_directories(SparseMatrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
