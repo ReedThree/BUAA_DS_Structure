@@ -26,6 +26,12 @@ int main(void) {
         printf("Failed!\n");
     }
 
+    if (Queue_getHead(queue) == NULL) {
+        printf("Rock and stone!\n");
+    } else {
+        printf("Failed!\n");
+    }
+
     Queue_enQueue(queue, &d1);
     Queue_enQueue(queue, &d2);
     Queue_enQueue(queue, &d3);
@@ -33,6 +39,12 @@ int main(void) {
     Queue_enQueue(queue, &d5);
 
     printf("%zu\n", queue->count);
+
+    if (Queue_getHead(queue)->n == d1.n) {
+        printf("Rock and stone!\n");
+    } else {
+        printf("Failed!\n");
+    }
 
     if (Queue_isFull(queue) == true) {
         printf("Rock and stone!\n");

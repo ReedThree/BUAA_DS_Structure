@@ -48,5 +48,14 @@ struct Queue_Data *Queue_deQueue(struct Queue *q) {
     q->count--;
     return ret;
 }
+
+struct Queue_Data *Queue_getHead(struct Queue *q) {
+    if (Queue_isEmpty(q)) {
+        return NULL;
+    } else {
+        return q->lst[q->front];
+    }
+}
+
 bool Queue_isFull(struct Queue *q) { return (bool)(q->count == q->capacity); }
 bool Queue_isEmpty(struct Queue *q) { return (bool)(q->count == 0); }
