@@ -21,7 +21,7 @@ struct LinkedList *LinkedList_createList(struct LinkedList_Data *initData) {
     return result;
 }
 
-int LinkedList_getLength(struct LinkedList *lst) { return lst->len; }
+size_t LinkedList_getLength(struct LinkedList *lst) { return lst->len; }
 
 void LinkedList_destroyList(struct LinkedList *lst) {
     struct LinkedList_Node *this = lst->head;
@@ -73,22 +73,22 @@ void LinkedList_insertFirst(struct LinkedList *lst,
     lst->len++;
 }
 
-int LinkedList_insertIndex(struct LinkedList *lst, int index,
-                           struct LinkedList_Data *data) {
-    if ((index < 0) || (index > lst->len)) {
-        return -1;
+bool LinkedList_insertIndex(struct LinkedList *lst, size_t index,
+                            struct LinkedList_Data *data) {
+    if (index > lst->len) {
+        return false;
     }
 
     if (index == 0) {
         LinkedList_insertFirst(lst, data);
     } else {
         struct LinkedList_Node *current = lst->head;
-        for (int now = 0; now < index - 1; now++) {
+        for (size_t now = 0; now < index - 1; now++) {
             current = current->next;
         }
         LinkedList_insert(lst, current, data);
     }
-    return 0;
+    return true;
 }
 
 void LinkedList_insertOrdered(struct LinkedList *lst,
@@ -121,18 +121,18 @@ void LinkedList_insertOrdered(struct LinkedList *lst,
     return;
 }
 
-int LinkedList_deleteIndex(struct LinkedList *lst, int index) {
-    if ((index < 0) || (index >= lst->len)) {
-        return -1;
+bool LinkedList_deleteIndex(struct LinkedList *lst, size_t index) {
+    if (index >= lst->len) {
+        return false;
     }
 
     struct LinkedList_Node *current = lst->head;
-    for (int now = 0; now < index; now++) {
+    for (size_t now = 0; now < index; now++) {
         current = current->next;
     }
 
     LinkedList_deleteNode(lst, current);
-    return 0;
+    return true;
 }
 
 struct LinkedList_Node *LinkedList_searchNode(struct LinkedList *lst,
@@ -191,13 +191,14 @@ void LinkedList_deleteNode(struct LinkedList *lst,
     }
 }
 
-struct LinkedList_Node *LinkedList_getIndex(struct LinkedList *lst, int index) {
-    if ((index < 0) || (index >= lst->len)) {
+struct LinkedList_Node *LinkedList_getIndex(struct LinkedList *lst,
+                                            size_t index) {
+    if (index >= lst->len) {
         return NULL;
     }
 
     struct LinkedList_Node *current = lst->head;
-    for (int now = 0; now < index; now++) {
+    for (size_t now = 0; now < index; now++) {
         current = current->next;
     }
 

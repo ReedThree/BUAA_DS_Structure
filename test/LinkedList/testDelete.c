@@ -24,7 +24,7 @@ int main(void) {
     LinkedList_deleteIndex(lst, 7);
     LinkedList_deleteIndex(lst, 0);
 
-    printf("Len = %d\n", LinkedList_getLength(lst));
+    printf("Len = %zu\n", LinkedList_getLength(lst));
     LinkedList_printLst(lst);
 
     LinkedList_destroyList(lst);

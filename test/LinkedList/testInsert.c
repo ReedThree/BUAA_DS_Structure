@@ -27,7 +27,7 @@ int main(void) {
     LinkedList_insertIndex(lst, 0, &d9);
     LinkedList_insertIndex(lst, 1, &d10);
 
-    printf("Len = %d\n", LinkedList_getLength(lst));
+    printf("Len = %zu\n", LinkedList_getLength(lst));
     LinkedList_printLst(lst);
 
     LinkedList_destroyList(lst);
