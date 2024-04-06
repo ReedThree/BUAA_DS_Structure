@@ -21,7 +21,7 @@ int main(void) {
 
     CircularLinkedList_deleteIndex(lst, 0);
     CircularLinkedList_deleteIndex(lst, 5);
-    printf("Len = %d\n", CircularLinkedList_getLength(lst));
+    printf("Len = %zu\n", CircularLinkedList_getLength(lst));
     CircularLinkedList_printLst(lst);
 
     CircularLinkedList_destroyList(lst);

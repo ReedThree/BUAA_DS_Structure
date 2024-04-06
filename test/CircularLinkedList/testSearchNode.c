@@ -25,7 +25,7 @@ int main(void) {
     struct CircularLinkedList_Node *nodeD3 =
         CircularLinkedList_searchNode(lst, &d3);
     CircularLinkedList_searchNodeBeginAt(lst, nodeD3, &d5)->d->c++;
-    printf("Len = %d\n", CircularLinkedList_getLength(lst));
+    printf("Len = %zu\n", CircularLinkedList_getLength(lst));
     CircularLinkedList_printLst(lst);
 
     CircularLinkedList_destroyList(lst);

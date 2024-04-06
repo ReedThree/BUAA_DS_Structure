@@ -18,7 +18,7 @@ int main(void) {
     CircularLinkedList_insertIndex(lst, 0, &d4);
     CircularLinkedList_insertIndex(lst, 0, &d5);
     CircularLinkedList_insertIndex(lst, 5, &d5);
-    printf("Len = %d\n", CircularLinkedList_getLength(lst));
+    printf("Len = %zu\n", CircularLinkedList_getLength(lst));
     CircularLinkedList_printLst(lst);
 
     CircularLinkedList_destroyList(lst);
