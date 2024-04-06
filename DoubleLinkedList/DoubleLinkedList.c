@@ -26,13 +26,13 @@ DoubleLinkedList_createList(struct DoubleLinkedList_Data *initData) {
     return result;
 }
 
-int DoubleLinkedList_getLength(struct DoubleLinkedList *lst) {
+size_t DoubleLinkedList_getLength(struct DoubleLinkedList *lst) {
     return lst->len;
 }
 
 void DoubleLinkedList_destroyList(struct DoubleLinkedList *lst) {
     struct DoubleLinkedList_Node *current = lst->head;
-    for (int i = 0; i < lst->len; i++) {
+    for (size_t i = 0; i < lst->len; i++) {
         struct DoubleLinkedList_Node *temp = current->next;
         DoubleLinkedList_destroyData(current->d);
         _free(current);
@@ -47,7 +47,7 @@ void DoubleLinkedList_printLst(struct DoubleLinkedList *lst) {
         printf("NULL\n");
         return;
     }
-    for (int i = 0; i < (lst->len - 1); i++) {
+    for (size_t i = 0; i < (lst->len - 1); i++) {
         DoubleLinkedList_printData(this->d);
         printf(", ");
         this = this->next;
@@ -62,7 +62,7 @@ void DoubleLinkedList_printLstReversed(struct DoubleLinkedList *lst) {
         printf("NULL\n");
         return;
     }
-    for (int i = 0; i < (lst->len - 1); i++) {
+    for (size_t i = 0; i < (lst->len - 1); i++) {
         DoubleLinkedList_printData(this->d);
         printf(", ");
         this = this->prev;
@@ -138,44 +138,44 @@ void DoubleLinkedList_insertOrdered(struct DoubleLinkedList *lst,
     }
 }
 
-int DoubleLinkedList_insertIndex(struct DoubleLinkedList *lst, int index,
-                                 struct DoubleLinkedList_Data *data) {
-    if ((index < 0) || (index > lst->len)) {
-        return -1;
+bool DoubleLinkedList_insertIndex(struct DoubleLinkedList *lst, size_t index,
+                                  struct DoubleLinkedList_Data *data) {
+    if (index > lst->len) {
+        return false;
     }
 
     if (index != lst->len) {
         struct DoubleLinkedList_Node *current = lst->head;
-        for (int i = 0; i < index; i++) {
+        for (size_t i = 0; i < index; i++) {
             current = current->next;
         }
         DoubleLinkedList_insertBefore(lst, current, data);
     } else {
         DoubleLinkedList_insertAfter(lst, lst->tail, data);
     }
-    return 0;
+    return true;
 }
 
-int DoubleLinkedList_insertIndexReversed(struct DoubleLinkedList *lst,
-                                         int index,
-                                         struct DoubleLinkedList_Data *data) {
-    if ((index < 0) || (index >= lst->len)) {
-        return -1;
+bool DoubleLinkedList_insertIndexReversed(struct DoubleLinkedList *lst,
+                                          size_t index,
+                                          struct DoubleLinkedList_Data *data) {
+    if (index >= lst->len) {
+        return false;
     }
 
     struct DoubleLinkedList_Node *current = lst->tail;
-    for (int i = 0; i < index; i++) {
+    for (size_t i = 0; i < index; i++) {
         current = current->prev;
     }
     DoubleLinkedList_insertAfter(lst, current, data);
 
-    return 0;
+    return true;
 }
 
 void DoubleLinkedList_forEach(struct DoubleLinkedList *lst,
                               void (*op)(struct DoubleLinkedList_Node *)) {
     struct DoubleLinkedList_Node *current = lst->head;
-    for (int i = 0; i < lst->len; i++) {
+    for (size_t i = 0; i < lst->len; i++) {
         op(current);
         current = current->next;
     }
@@ -184,7 +184,7 @@ void DoubleLinkedList_forEach(struct DoubleLinkedList *lst,
 void DoubleLinkedList_forEachReversed(
     struct DoubleLinkedList *lst, void (*op)(struct DoubleLinkedList_Node *)) {
     struct DoubleLinkedList_Node *current = lst->tail;
-    for (int i = 0; i < lst->len; i++) {
+    for (size_t i = 0; i < lst->len; i++) {
         op(current);
         current = current->prev;
     }
@@ -240,34 +240,34 @@ void DoubleLinkedList_deleteNode(struct DoubleLinkedList *lst,
     _free(node);
     lst->len--;
 }
-int DoubleLinkedList_deleteIndex(struct DoubleLinkedList *lst, int index) {
-    if ((index < 0) || (index >= lst->len)) {
-        return -1;
+bool DoubleLinkedList_deleteIndex(struct DoubleLinkedList *lst, size_t index) {
+    if (index >= lst->len) {
+        return false;
     }
     struct DoubleLinkedList_Node *current = lst->head;
-    for (int i = 0; i < index; i++) {
+    for (size_t i = 0; i < index; i++) {
         current = current->next;
     }
     DoubleLinkedList_deleteNode(lst, current);
-    return 0;
+    return true;
 }
 
-int DoubleLinkedList_deleteIndexReversed(struct DoubleLinkedList *lst,
-                                         int index) {
-    if ((index < 0) || (index >= lst->len)) {
-        return -1;
+bool DoubleLinkedList_deleteIndexReversed(struct DoubleLinkedList *lst,
+                                          size_t index) {
+    if (index >= lst->len) {
+        return false;
     }
     struct DoubleLinkedList_Node *current = lst->tail;
-    for (int i = 0; i < index; i++) {
+    for (size_t i = 0; i < index; i++) {
         current = current->prev;
     }
     DoubleLinkedList_deleteNode(lst, current);
-    return 0;
+    return true;
 }
 
-int DoubleLinkedList_getNodeIndex(struct DoubleLinkedList *lst,
-                                  struct DoubleLinkedList_Node *target) {
-    int i = 0;
+size_t DoubleLinkedList_getNodeIndex(struct DoubleLinkedList *lst,
+                                     struct DoubleLinkedList_Node *target) {
+    size_t i = 0;
     while (target->next != NULL) {
         i++;
         target = target->next;
@@ -276,12 +276,12 @@ int DoubleLinkedList_getNodeIndex(struct DoubleLinkedList *lst,
 }
 
 struct DoubleLinkedList_Node *
-DoubleLinkedList_getByIndex(struct DoubleLinkedList *lst, int index) {
-    if ((index < 0) || (index >= lst->len)) {
+DoubleLinkedList_getByIndex(struct DoubleLinkedList *lst, size_t index) {
+    if (index >= lst->len) {
         return NULL;
     }
     struct DoubleLinkedList_Node *current = lst->head;
-    for (int i = 0; i < index; i++) {
+    for (size_t i = 0; i < index; i++) {
         current = current->next;
     }
     return current;

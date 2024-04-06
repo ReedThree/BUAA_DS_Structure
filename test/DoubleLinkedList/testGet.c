@@ -4,7 +4,7 @@
 
 void f(struct DoubleLinkedList_Node *a);
 
-int main() {
+int main(void) {
     traceInit();
     struct DoubleLinkedList_Data d1 = {5, 1};
     struct DoubleLinkedList_Data d2 = {4, 2};
@@ -21,7 +21,7 @@ int main() {
     struct DoubleLinkedList_Node *n = DoubleLinkedList_getByIndex(lst, 2);
     DoubleLinkedList_printData(n->d);
     putchar('\n');
-    printf("%d\n", DoubleLinkedList_getNodeIndex(lst, n));
+    printf("%zu\n", DoubleLinkedList_getNodeIndex(lst, n));
 
     DoubleLinkedList_destroyList(lst);
     traceSummarize();

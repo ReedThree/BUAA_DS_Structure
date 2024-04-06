@@ -4,7 +4,7 @@
 
 void f(struct DoubleLinkedList_Node *a);
 
-int main() {
+int main(void) {
     traceInit();
     struct DoubleLinkedList_Data d1 = {5, 1};
     struct DoubleLinkedList_Data d2 = {4, 2};
@@ -25,7 +25,7 @@ int main() {
     DoubleLinkedList_push(lst, &d8);
     DoubleLinkedList_push(lst, &d9);
 
-    printf("Len = %d\n", DoubleLinkedList_getLength(lst));
+    printf("Len = %zu\n", DoubleLinkedList_getLength(lst));
     DoubleLinkedList_printLst(lst);
     DoubleLinkedList_printLstReversed(lst);
     struct DoubleLinkedList_Data *p1 = DoubleLinkedList_pop(lst);
@@ -35,7 +35,7 @@ int main() {
     DoubleLinkedList_printData(p2);
     putchar('\n');
 
-    printf("Len = %d\n", DoubleLinkedList_getLength(lst));
+    printf("Len = %zu\n", DoubleLinkedList_getLength(lst));
     DoubleLinkedList_printLst(lst);
 
     DoubleLinkedList_destroyList(lst);

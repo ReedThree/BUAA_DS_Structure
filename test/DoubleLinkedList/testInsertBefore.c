@@ -4,7 +4,7 @@
 
 void f(struct DoubleLinkedList_Node *a);
 
-int main() {
+int main(void) {
     traceInit();
     struct DoubleLinkedList_Data d1 = {5, 1};
     struct DoubleLinkedList_Data d2 = {4, 2};
@@ -24,7 +24,7 @@ int main() {
     DoubleLinkedList_insertBefore(lst, lst->head, &d6);
     DoubleLinkedList_insertBefore(lst, lst->tail, &d6);
 
-    printf("Len = %d\n", DoubleLinkedList_getLength(lst));
+    printf("Len = %zu\n", DoubleLinkedList_getLength(lst));
     DoubleLinkedList_printLst(lst);
     DoubleLinkedList_printLstReversed(lst);
 
