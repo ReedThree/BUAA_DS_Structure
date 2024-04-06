@@ -24,8 +24,8 @@ int main(void) {
     ArrayList_printData(ArrayList_getByPos(lst, 4));
 
     // 2
-    printf("%d", ArrayList_getPos(lst, &d3));
-    printf("%d", ArrayList_getPosOrdered(lst, &d3));
+    printf("%llu", ArrayList_getPos(lst, &d3));
+    printf("%llu", ArrayList_getPosOrdered(lst, &d3));
 
     ArrayList_destroyList(lst);
     traceSummarize();

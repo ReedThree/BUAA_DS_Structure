@@ -18,13 +18,13 @@ int main(void) {
     ArrayList_insertItemOrdered(lst, &d4);
     ArrayList_insertItemOrdered(lst, &d5);
 
-    printf("Len = %d\n", ArrayList_getLength(lst));
+    printf("Len = %zu\n", ArrayList_getLength(lst));
     ArrayList_printList(lst);
 
     ArrayList_deleteItem(lst, 4);
     ArrayList_deleteItem(lst, 0);
 
-    printf("Len = %d\n", ArrayList_getLength(lst));
+    printf("Len = %zu\n", ArrayList_getLength(lst));
     ArrayList_printList(lst);
 
     ArrayList_destroyList(lst);

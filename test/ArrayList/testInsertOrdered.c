@@ -18,7 +18,7 @@ int main(void) {
     ArrayList_insertItemOrdered(lst, &d2);
     ArrayList_insertItemOrdered(lst, &d1);
 
-    printf("Len = %d\n", ArrayList_getLength(lst));
+    printf("Len = %zu\n", ArrayList_getLength(lst));
     ArrayList_printList(lst);
 
     ArrayList_destroyList(lst);
