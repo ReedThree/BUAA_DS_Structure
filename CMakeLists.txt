@@ -1,15 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 
-# set the project name and version
 project(Structure VERSION 1.0)
 
 enable_testing()
 set(CMAKE_EXPORT_COMPILE_COMMANDS True)
-# TODO 4: Replace the following code by:
-# * Creating an interface library called tutorial_compiler_flags
-#   Hint: use add_library() with the INTERFACE signature
-# * Add compiler feature cxx_std_11 to tutorial_compiler_flags
-#   Hint: Use target_compile_features()
 
 find_program(BASH_EXECUTABLE NAMES bash REQUIRED)
 
@@ -24,6 +18,7 @@ add_subdirectory(LinkedList)
 add_subdirectory(SymmetricMatrix)
 add_subdirectory(Stack)
 add_subdirectory(Queue)
+add_subdirectory(HashTable)
 
 add_subdirectory(test/ArrayList)
 add_subdirectory(test/DoubleLinkedList)
@@ -32,3 +27,4 @@ add_subdirectory(test/LinkedList)
 add_subdirectory(test/SymmetricMatrix)
 add_subdirectory(test/Stack)
 add_subdirectory(test/Queue)
+add_subdirectory(test/HashTable)
