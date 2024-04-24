@@ -46,8 +46,22 @@ int main(void) {
     BinaryTree_forEach(tree, 3, f);
     putchar('\n');
 
+    struct BinaryTree *test = BinaryTree_recover("HEIBADFCG", 0, "ABEHICDFG");
+
+    printf("11:\n");
+    BinaryTree_forEach(test, 3, f);
+    putchar('\n');
+
+    BinaryTree_destroyTree(test);
+    test = BinaryTree_recover("HEIBADFCG", 1, "HIEBFDGCA");
+
+    printf("12:\n");
+    BinaryTree_forEach(test, 3, f);
+    putchar('\n');
+
     BinaryTree_destroyTree(tree);
     BinaryTree_destroyTree(cloned);
+    BinaryTree_destroyTree(test);
     traceFree();
     return 0;
 }

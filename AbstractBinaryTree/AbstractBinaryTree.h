@@ -37,6 +37,9 @@ void BinaryTree_forEach(struct BinaryTree *tree, int mode,
                         void (*f)(struct BinaryTree_Node *));
 struct BinaryTree *BinaryTree_clone(const struct BinaryTree *source);
 void BinaryTree_destroyTree(struct BinaryTree *target);
+// otherType: 0 -> DLR 1 -> LRD
+struct BinaryTree *BinaryTree_recover(const char *inSeq, int otherType,
+                                      const char *otherSeq);
 
 // Abstract
 bool BinaryTree_insert(struct BinaryTree *tree,

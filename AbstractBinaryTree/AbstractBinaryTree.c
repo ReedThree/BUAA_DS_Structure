@@ -13,6 +13,14 @@ struct BinaryTree_Node *_BinaryTree_fromPattern(const char *pattern,
                                                 struct BinaryTree_Node *parent,
                                                 struct BinaryTree *tree);
 
+struct BinaryTree_Node *_BinaryTree_recover_DLR(char *inSeq, char *preSeq,
+                                                struct BinaryTree_Node *parent,
+                                                struct BinaryTree *tree);
+struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
+                                                size_t postLen,
+                                                struct BinaryTree_Node *parent,
+                                                struct BinaryTree *tree);
+
 struct BinaryTree *BinaryTree_fromPattern(const char *pattern) {
 
     struct BinaryTree *tree =
@@ -259,6 +267,112 @@ void _BinaryTree_destroyTree(struct BinaryTree_Node *target) {
     BinaryTree_destroyData(target->data);
 
     _free(target);
+}
+
+struct BinaryTree *BinaryTree_recover(const char *inSeq, int otherType,
+                                      const char *otherSeq) {
+    char *_inSeq = (char *)_malloc((strlen(inSeq) + 1) * sizeof(char));
+    char *_otherSeq = (char *)_malloc((strlen(otherSeq) + 1) * sizeof(char));
+
+    strcpy(_inSeq, inSeq);
+    strcpy(_otherSeq, otherSeq);
+
+    struct BinaryTree *result =
+        (struct BinaryTree *)_malloc(sizeof(struct BinaryTree));
+    result->nodeCount = 0;
+    if (otherType == 0) {
+        result->root = _BinaryTree_recover_DLR(_inSeq, _otherSeq, NULL, result);
+    } else {
+        result->root = _BinaryTree_recover_LRD(
+            _inSeq, _otherSeq, strlen(otherSeq) - 1, NULL, result);
+    }
+
+    _free(_inSeq);
+    _free(_otherSeq);
+    return result;
+}
+
+// DLR
+struct BinaryTree_Node *_BinaryTree_recover_DLR(char *inSeq, char *preSeq,
+                                                struct BinaryTree_Node *parent,
+                                                struct BinaryTree *tree) {
+    static size_t preIndex = 0;
+
+    struct BinaryTree_Node *root =
+        (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
+    struct BinaryTree_Data *data =
+        (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
+    data->p = preSeq[preIndex];
+
+    preSeq[preIndex] = '\0';
+    root->data = data;
+    root->parent = parent;
+    preIndex++;
+    tree->nodeCount++;
+
+    size_t inIndex = 0;
+    while (inSeq[inIndex] != data->p) {
+        inIndex++;
+    }
+
+    inSeq[inIndex] = '\0';
+    if ((inIndex != 0) && (inSeq[inIndex - 1] != '\0')) {
+        root->left = _BinaryTree_recover_DLR(inSeq, preSeq, root, tree);
+    } else {
+        root->left = NULL;
+    }
+
+    if (inSeq[inIndex + 1] != '\0') {
+        root->right = _BinaryTree_recover_DLR(inSeq, preSeq, root, tree);
+    } else {
+        root->right = NULL;
+    }
+    return root;
+}
+
+// LRD
+struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
+                                                size_t postLen,
+                                                struct BinaryTree_Node *parent,
+                                                struct BinaryTree *tree) {
+    static size_t postIndex = 0;
+    if (parent == NULL) {
+        postIndex = postLen;
+    }
+    struct BinaryTree_Node *root =
+        (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
+    struct BinaryTree_Data *data =
+        (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
+    data->p = postSeq[postIndex];
+
+    postSeq[postIndex] = '\0';
+    root->data = data;
+    root->parent = parent;
+    postIndex--;
+    tree->nodeCount++;
+
+    size_t inIndex = 0;
+    while (inSeq[inIndex] != data->p) {
+        inIndex++;
+    }
+
+    inSeq[inIndex] = '\0';
+
+    if (inSeq[inIndex + 1] != '\0') {
+        root->right =
+            _BinaryTree_recover_LRD(inSeq, postSeq, postLen, root, tree);
+    } else {
+        root->right = NULL;
+    }
+
+    if ((inIndex != 0) && (inSeq[inIndex - 1] != '\0')) {
+        root->left =
+            _BinaryTree_recover_LRD(inSeq, postSeq, postLen, root, tree);
+    } else {
+        root->left = NULL;
+    }
+
+    return root;
 }
 
 inline size_t max(size_t a, size_t b) {
