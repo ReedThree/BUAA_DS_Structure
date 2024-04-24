@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define TREE_MAX_HEIGHT 64
+#define TREE_MAX_HEIGHT 1024
 
 struct BinaryTree_Data {
     int p;
@@ -48,8 +48,8 @@ bool BinaryTree_insert(struct BinaryTree *tree,
                        const struct BinaryTree_Data *data);
 bool BinaryTree_delete(struct BinaryTree *tree,
                        const struct BinaryTree_Data *data);
-struct BinaryTree *BinaryTree_find(const struct BinaryTree *tree,
-                                   const struct BinaryTree_Data *data);
+struct BinaryTree_Node *BinaryTree_find(const struct BinaryTree *tree,
+                                        const struct BinaryTree_Data *data);
 
 struct BinaryTree_Data *
 BinaryTree_copyData(const struct BinaryTree_Data *source);
