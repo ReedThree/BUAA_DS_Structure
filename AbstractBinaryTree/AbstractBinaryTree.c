@@ -21,6 +21,15 @@ struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
                                                 struct BinaryTree_Node *parent,
                                                 struct BinaryTree *tree);
 
+struct BinaryTree *BinaryTree_createTree(void) {
+    struct BinaryTree *tree =
+        (struct BinaryTree *)_malloc(sizeof(struct BinaryTree));
+    tree->root = NULL;
+    tree->nodeCount = 0;
+
+    return tree;
+}
+
 struct BinaryTree *BinaryTree_fromPattern(const char *pattern) {
 
     struct BinaryTree *tree =

@@ -22,6 +22,8 @@ struct BinaryTree_Node {
     struct BinaryTree_Node *right;
 };
 
+struct BinaryTree *BinaryTree_createTree(void);
+
 struct BinaryTree *BinaryTree_fromPattern(const char *pattern);
 // 以NULL结尾
 struct BinaryTree_Node **BinaryTree_getPath(struct BinaryTree_Node *parent,
