@@ -66,16 +66,15 @@ int main(void) {
     return 0;
 }
 
-struct BinaryTree_Data *
-BinaryTree_copyData(const struct BinaryTree_Data *source) {
-    struct BinaryTree_Data *result =
-        (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
-    result->p = source->p;
+BinaryTree_Data *BinaryTree_copyData(BinaryTree_Data *source) {
+    BinaryTree_Data *result =
+        (BinaryTree_Data *)_malloc(sizeof(BinaryTree_Data));
+    *result = *source;
     return result;
 }
-void BinaryTree_destroyData(struct BinaryTree_Data *target) { _free(target); }
+void BinaryTree_destroyData(BinaryTree_Data *target) { _free(target); }
 
-void f(struct BinaryTree_Node *node) { printf("%c", node->data->p); }
+void f(struct BinaryTree_Node *node) { printf("%c", *(node->data)); }
 
 void printPath(struct BinaryTree_Node **path) {
 
@@ -83,7 +82,7 @@ void printPath(struct BinaryTree_Node **path) {
     struct BinaryTree_Node *current = path[i];
 
     while (current != NULL) {
-        printf("%c ", current->data->p);
+        printf("%c ", *(current->data));
         i++;
         current = path[i];
     }
@@ -93,7 +92,7 @@ void printPath(struct BinaryTree_Node **path) {
 void checkPath(struct BinaryTree_Node *node) {
     struct BinaryTree_Node **path = BinaryTree_getPath(testHead, node);
     if (path != NULL) {
-        printf("%c: ", node->data->p);
+        printf("%c: ", *(node->data));
         printPath(path);
         _free(path);
     }

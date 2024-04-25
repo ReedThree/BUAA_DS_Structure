@@ -6,9 +6,7 @@
 
 #define TREE_MAX_HEIGHT 1024
 
-struct BinaryTree_Data {
-    int p;
-};
+typedef int BinaryTree_Data;
 
 struct BinaryTree {
     struct BinaryTree_Node *root;
@@ -16,7 +14,7 @@ struct BinaryTree {
 };
 
 struct BinaryTree_Node {
-    struct BinaryTree_Data *data;
+    BinaryTree_Data *data;
     struct BinaryTree_Node *parent;
     struct BinaryTree_Node *left;
     struct BinaryTree_Node *right;
@@ -44,14 +42,12 @@ struct BinaryTree *BinaryTree_recover(const char *inSeq, int otherType,
                                       const char *otherSeq);
 
 // Abstract
-bool BinaryTree_insert(struct BinaryTree *tree,
-                       const struct BinaryTree_Data *data);
-bool BinaryTree_delete(struct BinaryTree *tree,
-                       const struct BinaryTree_Data *data);
+/*
+bool BinaryTree_insert(struct BinaryTree *tree, BinaryTree_Data *data);
+bool BinaryTree_delete(struct BinaryTree *tree, BinaryTree_Data *data);
 struct BinaryTree_Node *BinaryTree_find(const struct BinaryTree *tree,
-                                        const struct BinaryTree_Data *data);
-
-struct BinaryTree_Data *
-BinaryTree_copyData(const struct BinaryTree_Data *source);
-void BinaryTree_destroyData(struct BinaryTree_Data *target);
+                                        BinaryTree_Data *data);
+*/
+BinaryTree_Data *BinaryTree_copyData(BinaryTree_Data *source);
+void BinaryTree_destroyData(BinaryTree_Data *target);
 #endif

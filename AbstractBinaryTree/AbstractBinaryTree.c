@@ -53,10 +53,10 @@ struct BinaryTree_Node *_BinaryTree_fromPattern(const char *pattern,
     } else {
         struct BinaryTree_Node *result =
             (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
-        struct BinaryTree_Data *data =
-            (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
+        BinaryTree_Data *data =
+            (BinaryTree_Data *)_malloc(sizeof(BinaryTree_Data));
 
-        data->p = ch;
+        *data = ch;
         result->data = data;
         result->left = _BinaryTree_fromPattern(pattern, result, tree);
         result->right = _BinaryTree_fromPattern(pattern, result, tree);
@@ -246,7 +246,7 @@ struct BinaryTree_Node *_BinaryTree_clone(const struct BinaryTree_Node *source,
                                           struct BinaryTree_Node *parent) {
     struct BinaryTree_Node *current =
         (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
-    struct BinaryTree_Data *data = BinaryTree_copyData(source->data);
+    BinaryTree_Data *data = BinaryTree_copyData(source->data);
     current->data = data;
     current->parent = parent;
     current->left = NULL;
@@ -309,9 +309,8 @@ struct BinaryTree_Node *_BinaryTree_recover_DLR(char *inSeq, char *preSeq,
 
     struct BinaryTree_Node *root =
         (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
-    struct BinaryTree_Data *data =
-        (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
-    data->p = preSeq[preIndex];
+    BinaryTree_Data *data = (BinaryTree_Data *)_malloc(sizeof(BinaryTree_Data));
+    *data = preSeq[preIndex];
 
     preSeq[preIndex] = '\0';
     root->data = data;
@@ -320,7 +319,7 @@ struct BinaryTree_Node *_BinaryTree_recover_DLR(char *inSeq, char *preSeq,
     tree->nodeCount++;
 
     size_t inIndex = 0;
-    while (inSeq[inIndex] != data->p) {
+    while (inSeq[inIndex] != *data) {
         inIndex++;
     }
 
@@ -350,9 +349,8 @@ struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
     }
     struct BinaryTree_Node *root =
         (struct BinaryTree_Node *)_malloc(sizeof(struct BinaryTree_Node));
-    struct BinaryTree_Data *data =
-        (struct BinaryTree_Data *)_malloc(sizeof(struct BinaryTree_Data));
-    data->p = postSeq[postIndex];
+    BinaryTree_Data *data = (BinaryTree_Data *)_malloc(sizeof(BinaryTree_Data));
+    *data = postSeq[postIndex];
 
     postSeq[postIndex] = '\0';
     root->data = data;
@@ -361,7 +359,7 @@ struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
     tree->nodeCount++;
 
     size_t inIndex = 0;
-    while (inSeq[inIndex] != data->p) {
+    while (inSeq[inIndex] != *data) {
         inIndex++;
     }
 
