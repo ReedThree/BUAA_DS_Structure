@@ -119,7 +119,7 @@ size_t BinaryTree_getHeight(const struct BinaryTree *tree) {
     return _BinaryTree_getHeight(tree->root);
 }
 
-size_t BinaryTree_getNodeHeight(const struct BinaryTree_Node *node) {
+size_t BinaryTree_getNodeDistanceFromRoot(const struct BinaryTree_Node *node) {
     size_t height = 0;
     const struct BinaryTree_Node *current = node;
 
@@ -416,7 +416,7 @@ void BinaryTree_printTree(const struct BinaryTree *tree) {
         front = (front + 1) % tree->nodeCount;
         count--;
 
-        size_t newHeight = BinaryTree_getNodeHeight(current);
+        size_t newHeight = BinaryTree_getNodeDistanceFromRoot(current);
         if (newHeight + 1 > currentHeight) {
             putchar('\n');
             currentHeight = newHeight + 1;

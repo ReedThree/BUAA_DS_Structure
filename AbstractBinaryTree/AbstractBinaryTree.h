@@ -31,7 +31,7 @@ struct BinaryTree_Node *BinaryTree_getParent(struct BinaryTree_Node *node);
 struct BinaryTree_Node *BinaryTree_getLeft(struct BinaryTree_Node *node);
 struct BinaryTree_Node *BinaryTree_getRight(struct BinaryTree_Node *node);
 size_t BinaryTree_getHeight(const struct BinaryTree *tree);
-size_t BinaryTree_getNodeHeight(const struct BinaryTree_Node *node);
+size_t BinaryTree_getNodeDistanceFromRoot(const struct BinaryTree_Node *node);
 size_t BinaryTree_getNodeCount(const struct BinaryTree *tree);
 // 0 -> DLR; 1 -> LDR; 2-> LRD; 3 -> layer
 void BinaryTree_forEach(struct BinaryTree *tree, int mode,
