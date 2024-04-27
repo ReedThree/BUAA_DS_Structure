@@ -1,0 +1,3 @@
+add_library(BinarySearchTree BinarySearchTree.c)
+target_link_libraries(BinarySearchTree PRIVATE structure_compiler_flags AbstractBinaryTree Trace)
+target_include_directories(BinarySearchTree INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
