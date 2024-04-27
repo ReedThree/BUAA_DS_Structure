@@ -31,6 +31,7 @@ struct BinaryTree_Node *BinaryTree_getParent(struct BinaryTree_Node *node);
 struct BinaryTree_Node *BinaryTree_getLeft(struct BinaryTree_Node *node);
 struct BinaryTree_Node *BinaryTree_getRight(struct BinaryTree_Node *node);
 size_t BinaryTree_getHeight(const struct BinaryTree *tree);
+size_t BinaryTree_getNodeHeight(const struct BinaryTree_Node *node);
 size_t BinaryTree_getNodeCount(const struct BinaryTree *tree);
 // 0 -> DLR; 1 -> LDR; 2-> LRD; 3 -> layer
 void BinaryTree_forEach(struct BinaryTree *tree, int mode,
@@ -41,6 +42,8 @@ void BinaryTree_destroyTree(struct BinaryTree *target);
 struct BinaryTree *BinaryTree_recover(const char *inSeq, int otherType,
                                       const char *otherSeq);
 
+void BinaryTree_printTree(const struct BinaryTree *tree);
+
 // Abstract
 /*
 bool BinaryTree_insert(struct BinaryTree *tree, BinaryTree_Data *data);
@@ -50,4 +53,6 @@ struct BinaryTree_Node *BinaryTree_find(const struct BinaryTree *tree,
 */
 BinaryTree_Data *BinaryTree_copyData(BinaryTree_Data *source);
 void BinaryTree_destroyData(BinaryTree_Data *target);
+
+void BinaryTree_printData(BinaryTree_Data *target);
 #endif

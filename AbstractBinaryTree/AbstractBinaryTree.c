@@ -119,6 +119,18 @@ size_t BinaryTree_getHeight(const struct BinaryTree *tree) {
     return _BinaryTree_getHeight(tree->root);
 }
 
+size_t BinaryTree_getNodeHeight(const struct BinaryTree_Node *node) {
+    size_t height = 0;
+    const struct BinaryTree_Node *current = node;
+
+    while (current != NULL) {
+        height++;
+        current = current->parent;
+    }
+
+    return height;
+}
+
 size_t _BinaryTree_getHeight(const struct BinaryTree_Node *node) {
     if (node == NULL) {
         return 0;
@@ -380,6 +392,59 @@ struct BinaryTree_Node *_BinaryTree_recover_LRD(char *inSeq, char *postSeq,
     }
 
     return root;
+}
+
+void BinaryTree_printTree(const struct BinaryTree *tree) {
+    if (tree->nodeCount == 0) {
+        printf("^\n");
+        return;
+    }
+    struct BinaryTree_Node **nodeQueue = (struct BinaryTree_Node **)_malloc(
+        tree->nodeCount * sizeof(struct BinaryTree_Node *));
+    size_t front = 0;
+    size_t rear = tree->nodeCount - 1;
+    size_t count = 0;
+
+    rear = (rear + 1) % tree->nodeCount;
+
+    nodeQueue[rear] = tree->root;
+    count++;
+    BinaryTree_printData(tree->root->data);
+    size_t currentHeight = 1;
+    while (count > 0) {
+        struct BinaryTree_Node *current = nodeQueue[front];
+        front = (front + 1) % tree->nodeCount;
+        count--;
+
+        size_t newHeight = BinaryTree_getNodeHeight(current);
+        if (newHeight + 1 > currentHeight) {
+            putchar('\n');
+            currentHeight = newHeight + 1;
+        }
+
+        if (current->left != NULL) {
+            BinaryTree_printData(current->left->data);
+            putchar(' ');
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->left;
+            count++;
+        } else {
+            printf("^ ");
+        }
+
+        if (current->right != NULL) {
+            BinaryTree_printData(current->right->data);
+            putchar(' ');
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->right;
+            count++;
+        } else {
+            printf("^ ");
+        }
+    }
+    _free(nodeQueue);
 }
 
 inline size_t max(size_t a, size_t b) {

@@ -59,6 +59,9 @@ int main(void) {
     BinaryTree_forEach(test, 3, f);
     putchar('\n');
 
+    printf("13:\n");
+    BinaryTree_printTree(tree);
+
     BinaryTree_destroyTree(tree);
     BinaryTree_destroyTree(cloned);
     BinaryTree_destroyTree(test);
@@ -105,3 +108,4 @@ void checkRoot(struct BinaryTree_Node *node) {
         printf("Failed!\n");
     }
 }
+void BinaryTree_printData(BinaryTree_Data *target) { printf("%c", *target); }
