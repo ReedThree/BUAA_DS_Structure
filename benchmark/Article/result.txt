@@ -1,0 +1,24 @@
+Sorted Data:
+                                O(0)        O(2)        O(3)
+ArrayListGeneral(100, 2)        2.751       1.101       1.028
+ArrayListGeneral(100000, 2)     2.763       1.038       1.051
+ArrayListGeneral(100, 8)        2.720       1.022       1.011
+LinkedListGeneral               >60         >60         >60
+LinkedListFast                  >60         >60         >60
+HashTableGeneral(100591)        >60         >60         64.77
+HashTableGeneral(1000639)       >60         >60         59.87
+HashTableFast(100591)           1.682       1.561       1.573
+HashTableFast(1000639)          1.241       1.064       1.214
+BinarySearchTree                5.150       3.375       3.673
+BinarySearchTreeNoPrint         4.616       3.685       3.263
+AVLTree                         1.325       1.021       1.016
+
+Random Data:
+                                O(0)        O(2)        O(3)
+ArrayListGeneral(100, 2)        57.947      11.147      10.805
+ArrayListGeneral(100000, 2)     59.127      11.033      11.486
+ArrayListGeneral(100, 8)        59.685      11.148      11.070
+HashTableFast(100591)           2.433       2.207       2.187
+HashTableFast(1000639)          1.789       1.611       1.604
+BinarySearchTree                4.164       4.491       4.799
+AVLTree                         4.403       3.710       3.698
