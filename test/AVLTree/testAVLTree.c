@@ -36,18 +36,23 @@ int main(void) {
     BinaryTree_insertList(tree, toSort, 13, true);
 
     printf("2:\n");
+    char dotBuffer[4096] = {0};
+    BinaryTree_dotGraph(tree, dotBuffer);
+    puts(dotBuffer);
+
+    printf("3:\n");
     BinaryTree_forEach(tree, 1, f);
     putchar('\n');
 
     targetTree = tree;
 
-    printf("3:\n");
+    printf("4:\n");
 
     BinaryTree_forEach(tree, 3, checkFind);
     putchar('\n');
 
     int deleteOrder[13] = {35, 30, 64, 10, 38, 73, 50, 70, 100, 40, 60, 50, 58};
-    printf("4:\n");
+    printf("5:\n");
     for (size_t i = 0; i < 13; i++) {
         BinaryTree_delete(tree, &deleteOrder[i]);
         BinaryTree_forEach(tree, 1, f);

@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #define TREE_MAX_HEIGHT 1024
+#define DOT_GRAPH_FORMAT_BUFFER_LEN 255
 
 typedef int BinaryTree_Data;
 
@@ -43,6 +44,7 @@ struct BinaryTree *BinaryTree_recover(const char *inSeq, int otherType,
                                       const char *otherSeq);
 
 void BinaryTree_printTree(const struct BinaryTree *tree);
+void BinaryTree_dotGraph(const struct BinaryTree *tree, char *output);
 
 // Abstract
 /*

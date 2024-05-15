@@ -848,6 +848,111 @@ struct BinaryTree_Node *BinaryTree_find(const struct BinaryTree *tree,
     }
 }
 
+void BinaryTree_dotGraph(const struct BinaryTree *tree, char *output) {
+    const char dotGraphBegin[] = "graph G {\nnode [shape = circle;];\n";
+    const char dotGraphEnd[] = "}";
+
+    char formatBuffer[DOT_GRAPH_FORMAT_BUFFER_LEN] = {0};
+
+    strcpy(output, dotGraphBegin);
+
+    // node label
+    struct BinaryTree_Node **nodeQueue = (struct BinaryTree_Node **)_malloc(
+        tree->nodeCount * sizeof(struct BinaryTree_Node *));
+    size_t front = 0;
+    size_t rear = tree->nodeCount - 1;
+    size_t count = 0;
+
+    size_t nodeId = 0;
+
+    rear = (rear + 1) % tree->nodeCount;
+
+    nodeQueue[rear] = tree->root;
+    count++;
+
+    // edge
+
+    struct BinaryTree_Node **nodeList = (struct BinaryTree_Node **)_malloc(
+        tree->nodeCount * sizeof(struct BinaryTree_Node *));
+
+    while (count > 0) {
+        struct BinaryTree_Node *current = nodeQueue[front];
+        front = (front + 1) % tree->nodeCount;
+        count--;
+
+        nodeList[nodeId] = current;
+
+        sprintf(formatBuffer, "%zu [label = \"%d\";];\n", nodeId,
+                *(current->data));
+
+        strcat(output, formatBuffer);
+        nodeId++;
+
+        if (current->left != NULL) {
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->left;
+            count++;
+        }
+
+        if (current->right != NULL) {
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->right;
+            count++;
+        }
+    }
+
+    front = 0;
+    rear = tree->nodeCount - 1;
+    count = 0;
+
+    nodeId = 0;
+
+    rear = (rear + 1) % tree->nodeCount;
+
+    nodeQueue[rear] = tree->root;
+    count++;
+
+    while (count > 0) {
+        struct BinaryTree_Node *current = nodeQueue[front];
+        front = (front + 1) % tree->nodeCount;
+        count--;
+
+        if (current->parent != NULL) {
+            size_t parentId = 0;
+            for (size_t i = 0; i < nodeId; i++) {
+                if (nodeList[i] == current->parent) {
+                    parentId = i;
+                    break;
+                }
+            }
+            sprintf(formatBuffer, "%zu -- %zu;\n", parentId, nodeId);
+            strcat(output, formatBuffer);
+        }
+
+        nodeId++;
+
+        if (current->left != NULL) {
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->left;
+            count++;
+        }
+
+        if (current->right != NULL) {
+            rear = (rear + 1) % tree->nodeCount;
+
+            nodeQueue[rear] = current->right;
+            count++;
+        }
+    }
+
+    strcat(output, dotGraphEnd);
+    _free(nodeQueue);
+    _free(nodeList);
+}
+
 inline size_t max(size_t a, size_t b) {
     if (a > b) {
         return a;

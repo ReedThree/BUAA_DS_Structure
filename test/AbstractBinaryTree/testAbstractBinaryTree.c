@@ -61,6 +61,10 @@ int main(void) {
 
     printf("13:\n");
     BinaryTree_printTree(tree);
+    printf("\n14:\n");
+    char dotOutput[4096] = {0};
+    BinaryTree_dotGraph(tree, dotOutput);
+    puts(dotOutput);
 
     BinaryTree_destroyTree(tree);
     BinaryTree_destroyTree(cloned);
