@@ -3,6 +3,7 @@
 
 #define DOT_NODE_FORMAT_BUFFER_LEN 255
 
+#include <stdbool.h>
 #include <stddef.h>
 
 typedef int VertexData;
@@ -17,6 +18,7 @@ struct GraphVertex {
     VertexData data;
     struct GraphEdgeNode *edgeList;
     size_t edgeCount;
+    bool valid;
 };
 
 struct Graph {
@@ -32,6 +34,7 @@ struct Graph *Graph_fromPattern(size_t vertexCount, size_t edgeCount);
 size_t Graph_insertVertex(struct Graph *graph, VertexData data);
 void Graph_insertEdge(struct Graph *graph, size_t vertexA, size_t vertexB,
                       int weight);
+void Graph_deleteVertex(struct Graph *graph, size_t vertexId);
 void Graph_destroyGraph(struct Graph *graph);
 void Graph_DFS(struct Graph *graph, size_t beginNode,
                void (*f)(struct GraphVertex *));

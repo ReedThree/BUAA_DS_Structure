@@ -8,6 +8,7 @@
 struct Graph *Graph_create(size_t maxVertexCount) {
     struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
     graph->vertexCount = 0;
+    graph->vertexCapacity = maxVertexCount;
 
     struct GraphVertex *vertexList = (struct GraphVertex *)malloc(
         maxVertexCount * sizeof(struct GraphVertex));
@@ -28,6 +29,7 @@ struct Graph *Graph_fromPattern(size_t vertexCount, size_t edgeCount) {
         scanf("%d", &(graph->vertexList[i].data));
         graph->vertexList[i].edgeCount = 0;
         graph->vertexList[i].edgeList = NULL;
+        graph->vertexList[i].valid = true;
     }
 
     for (size_t i = 0; i < edgeCount; i++) {
@@ -50,6 +52,7 @@ size_t Graph_insertVertex(struct Graph *graph, VertexData data) {
     graph->vertexList[vertexId].data = data;
     graph->vertexList[vertexId].edgeList = NULL;
     graph->vertexList[vertexId].edgeCount = 0;
+    graph->vertexList[vertexId].valid = true;
 
     graph->vertexCount++;
     return vertexId;
@@ -91,13 +94,46 @@ void Graph_insertEdge(struct Graph *graph, size_t vertexA, size_t vertexB,
     graph->vertexList[vertexB].edgeCount++;
 }
 
+void Graph_deleteVertex(struct Graph *graph, size_t vertexId) {
+    struct GraphEdgeNode *currentEdge = graph->vertexList[vertexId].edgeList;
+    while (currentEdge != NULL) {
+        size_t otherVertexId = currentEdge->otherVertex;
+        struct GraphEdgeNode *otherPrev = NULL;
+        struct GraphEdgeNode *otherCurrent =
+            graph->vertexList[otherVertexId].edgeList;
+        while (otherCurrent != NULL) {
+            if (otherCurrent->otherVertex == vertexId) {
+                if (otherPrev == NULL) {
+                    graph->vertexList[otherVertexId].edgeList =
+                        otherCurrent->next;
+                } else {
+                    otherPrev->next = otherCurrent->next;
+                }
+                free(otherCurrent);
+                graph->vertexList[otherVertexId].edgeCount--;
+                break;
+            } else {
+                otherPrev = otherCurrent;
+                otherCurrent = otherCurrent->next;
+            }
+        }
+
+        struct GraphEdgeNode *next = currentEdge->next;
+        free(currentEdge);
+        currentEdge = next;
+    }
+    graph->vertexList[vertexId].edgeCount = 0;
+    graph->vertexList[vertexId].edgeList = 0;
+    graph->vertexList[vertexId].valid = false;
+    graph->vertexCount--;
+}
+
 void Graph_destroyGraph(struct Graph *graph) {
-    for (size_t i = 0; i < graph->vertexCount; i++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
         struct GraphEdgeNode *current = graph->vertexList[i].edgeList;
 
         while (current != NULL) {
             struct GraphEdgeNode *next = current->next;
-
             free(current);
             current = next;
         }
@@ -179,11 +215,11 @@ void Graph_BFS(struct Graph *graph, size_t beginNode,
 }
 
 void *Graph_adjacentMatrix(struct Graph *graph) {
-    size_t N = graph->vertexCount;
+    size_t N = graph->vertexCapacity;
 
     bool(*adjacentMatrix)[N] = (bool(*)[N])calloc(N * N, sizeof(bool));
 
-    for (size_t i = 0; i < graph->vertexCount; i++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
         struct GraphEdgeNode *current = graph->vertexList[i].edgeList;
 
         while (current != NULL) {
@@ -196,20 +232,20 @@ void *Graph_adjacentMatrix(struct Graph *graph) {
 }
 
 void *Graph_weightMatrix(struct Graph *graph) {
-    size_t N = graph->vertexCount;
+    size_t N = graph->vertexCapacity;
 
     int(*weightMatrix)[N] = (int(*)[N])malloc(N * N * sizeof(int));
-    for (size_t i = 0; i < graph->vertexCount; i++) {
-        for (size_t j = 0; j < graph->vertexCount; j++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
+        for (size_t j = 0; j < graph->vertexCapacity; j++) {
             weightMatrix[i][j] = INT_MAX;
         }
     }
 
-    for (size_t i = 0; i < graph->vertexCount; i++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
         weightMatrix[i][i] = 0;
     }
 
-    for (size_t i = 0; i < graph->vertexCount; i++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
         struct GraphEdgeNode *current = graph->vertexList[i].edgeList;
 
         while (current != NULL) {
@@ -222,20 +258,22 @@ void *Graph_weightMatrix(struct Graph *graph) {
 }
 
 void Graph_generateDotGraph(struct Graph *graph, char *outputBuffer) {
-    size_t N = graph->vertexCount;
+    size_t N = graph->vertexCapacity;
     bool(*visited)[N] = (bool(*)[N])calloc(N * N, sizeof(bool));
 
     const char *dotBegin = "graph G {\nnode [shape = circle;];\n";
     strcpy(outputBuffer, dotBegin);
 
     char nodeFormatBuffer[DOT_NODE_FORMAT_BUFFER_LEN] = {0};
-    for (size_t i = 0; i < graph->vertexCount; i++) {
-        sprintf(nodeFormatBuffer, "%zu [label = \"%d\";];\n", i,
-                graph->vertexList[i].data);
-        strcat(outputBuffer, nodeFormatBuffer);
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
+        if (graph->vertexList[i].valid) {
+            sprintf(nodeFormatBuffer, "%zu [label = \"%d\";];\n", i,
+                    graph->vertexList[i].data);
+            strcat(outputBuffer, nodeFormatBuffer);
+        }
     }
 
-    for (size_t i = 0; i < graph->vertexCount; i++) {
+    for (size_t i = 0; i < graph->vertexCapacity; i++) {
         struct GraphEdgeNode *current = graph->vertexList[i].edgeList;
 
         while (current != NULL) {
@@ -256,7 +294,7 @@ void Graph_generateDotGraph(struct Graph *graph, char *outputBuffer) {
 }
 
 struct Graph *Graph_MSTPrim(struct Graph *graph, size_t beginVertex) {
-    size_t N = graph->vertexCount;
+    size_t N = graph->vertexCapacity;
 
     int(*weightMatrix)[N] = Graph_weightMatrix(graph);
 
@@ -265,7 +303,7 @@ struct Graph *Graph_MSTPrim(struct Graph *graph, size_t beginVertex) {
 
     size_t *edges = (size_t *)malloc(N * sizeof(size_t));
 
-    struct Graph *mstGraph = Graph_create(N);
+    struct Graph *mstGraph = Graph_create(graph->vertexCount);
 
     size_t *toNewId = (size_t *)calloc(N, sizeof(size_t));
 
