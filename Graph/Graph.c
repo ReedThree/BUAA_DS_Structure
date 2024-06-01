@@ -144,26 +144,26 @@ void Graph_destroyGraph(struct Graph *graph) {
 
 void Graph_DFS(struct Graph *graph, size_t beginNode,
                void (*f)(struct GraphVertex *)) {
-    bool *visited = (bool *)calloc(graph->vertexCount, sizeof(bool));
+    bool *visited = (bool *)calloc(graph->vertexCapacity, sizeof(bool));
 
     size_t *nodeStack = (size_t *)malloc(graph->vertexCount * sizeof(size_t));
     size_t nodeStackTop = 0;
 
-    visited[beginNode] = true;
     nodeStack[nodeStackTop] = beginNode;
     nodeStackTop++;
 
     while (nodeStackTop > 0) {
         size_t topNodeId = nodeStack[nodeStackTop - 1];
         nodeStackTop--;
-
-        f(&graph->vertexList[topNodeId]);
+        if (!visited[topNodeId]) {
+            f(&graph->vertexList[topNodeId]);
+            visited[topNodeId] = true;
+        }
 
         struct GraphEdgeNode *current = graph->vertexList[topNodeId].edgeList;
         while (current != NULL) {
             size_t otherNodeId = current->otherVertex;
             if (!visited[otherNodeId]) {
-                visited[otherNodeId] = true;
                 nodeStack[nodeStackTop] = otherNodeId;
                 nodeStackTop++;
             }
@@ -176,14 +176,13 @@ void Graph_DFS(struct Graph *graph, size_t beginNode,
 }
 void Graph_BFS(struct Graph *graph, size_t beginNode,
                void (*f)(struct GraphVertex *)) {
-    bool *visited = (bool *)calloc(graph->vertexCount, sizeof(bool));
+    bool *visited = (bool *)calloc(graph->vertexCapacity, sizeof(bool));
     size_t *nodeQueue = (size_t *)malloc(graph->vertexCount * sizeof(size_t));
     size_t nodeQueueCapacity = graph->vertexCount;
     size_t nodeQueueLen = 0;
     size_t nodeQueueFront = 0;
     size_t nodeQueueRear = nodeQueueCapacity - 1;
 
-    visited[beginNode] = true;
     nodeQueueRear = (nodeQueueRear + 1) % nodeQueueCapacity;
     nodeQueue[nodeQueueRear] = beginNode;
     nodeQueueLen++;
@@ -192,16 +191,16 @@ void Graph_BFS(struct Graph *graph, size_t beginNode,
         size_t currentNodeId = nodeQueue[nodeQueueFront];
         nodeQueueFront = (nodeQueueFront + 1) % nodeQueueCapacity;
         nodeQueueLen--;
-
-        f(&graph->vertexList[currentNodeId]);
+        if (!visited[currentNodeId]) {
+            f(&graph->vertexList[currentNodeId]);
+            visited[currentNodeId] = true;
+        }
 
         struct GraphEdgeNode *current =
             graph->vertexList[currentNodeId].edgeList;
         while (current != NULL) {
             size_t otherNodeId = current->otherVertex;
             if (!visited[otherNodeId]) {
-                visited[otherNodeId] = true;
-
                 nodeQueueRear = (nodeQueueRear + 1) % nodeQueueCapacity;
                 nodeQueue[nodeQueueRear] = otherNodeId;
                 nodeQueueLen++;
