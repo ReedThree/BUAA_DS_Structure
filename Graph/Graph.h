@@ -46,5 +46,6 @@ void *Graph_weightMatrix(struct Graph *graph);
 void Graph_generateDotGraph(struct Graph *graph, char *outputBuffer);
 
 struct Graph *Graph_MSTPrim(struct Graph *graph, size_t beginVertex);
+size_t *Graph_Dijkstra(struct Graph *graph, size_t sourceVertex);
 
 #endif

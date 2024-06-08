@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -357,4 +358,55 @@ struct Graph *Graph_MSTPrim(struct Graph *graph, size_t beginVertex) {
     free(edges);
     free(toNewId);
     return mstGraph;
+}
+
+size_t *Graph_Dijkstra(struct Graph *graph, size_t sourceVertex) {
+    size_t N = graph->vertexCapacity;
+    int(*weightMatrix)[N] = (int(*)[N])Graph_weightMatrix(graph);
+    bool *pathFound = (bool *)calloc(sizeof(bool), N);
+    size_t *minPathLenByVertex = (size_t *)malloc(sizeof(size_t) * N);
+    size_t *minPathViaVertex = (size_t *)malloc(sizeof(size_t) * N);
+
+    pathFound[sourceVertex] = true;
+
+    for (size_t i = 0; i < N; i++) {
+        minPathLenByVertex[i] = (size_t)weightMatrix[sourceVertex][i];
+    }
+
+    for (size_t i = 0; i < N; i++) {
+        minPathViaVertex[i] = sourceVertex;
+    }
+    for (size_t count = 0; count < (N - 1); count++) {
+        size_t nearestVertexId = sourceVertex;
+        size_t nearesetVertexWeight = SIZE_MAX;
+
+        for (size_t i = 0; i < N; i++) {
+            if (!pathFound[i] &&
+                (minPathLenByVertex[i] < nearesetVertexWeight)) {
+                nearestVertexId = i;
+                nearesetVertexWeight = minPathLenByVertex[i];
+            }
+        }
+
+        pathFound[nearestVertexId] = true;
+
+        for (size_t i = 0; i < N; i++) {
+            if (weightMatrix[nearestVertexId][i] != INT_MAX) {
+                if (!pathFound[i]) {
+                    size_t currentLen =
+                        (size_t)weightMatrix[nearestVertexId][i] +
+                        minPathLenByVertex[nearestVertexId];
+                    if (currentLen < minPathLenByVertex[i]) {
+                        minPathLenByVertex[i] = currentLen;
+                        minPathViaVertex[i] = nearestVertexId;
+                    }
+                }
+            }
+        }
+    }
+
+    free(weightMatrix);
+    free(pathFound);
+    free(minPathLenByVertex);
+    return minPathViaVertex;
 }
